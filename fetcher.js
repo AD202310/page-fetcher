@@ -1,18 +1,15 @@
 
 const request = require('request');
-const fetcher = (url) => {
-  request(url, function (error, response,body) {
-    console.error('error:', error);
-    console.log('statusCode:', response && response.statusCode);
-    console.log(body)
-  })
-}
+const fs = require('fs');
 
-fetcher('https://example.edu')
+let url = process.argv[2];
+//let url = 'https://example.edu'
+let filePath = process.argv[3];
+//let filePath = "./index.html";
 
-
- const fs = require('fs');     
- fs.appendFile("./index.html", "text", function (err) {
-      if(err) throw err;
-      console.log("Updated!")
-    })
+request(url, function(error, response, body) {
+  console.log(`Downloaded and saved ${body.length} bytes to ${filePath}`);
+  fs.appendFile(filePath, body, function(err) {
+    if (err) throw err;
+  });
+});
